@@ -30,6 +30,19 @@ const PageBuilder::_httpHeaderConstST  PageBuilder::_headersNocache[] PROGMEM = 
  * @param   i Index of the arguments
  * @return  Requested value
  */
+
+ //PageBuilder.cpp中增加相应实现
+#if defined(ARDUINO_ARCH_ESP32) && (ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0))
+  bool  PageBuilder::canHandle(WebServer &server,HTTPMethod requestMethod, PageBuilderUtil::URI_TYPE_SIGNATURE uri ){
+	  (void)server;
+	  return canHandle(requestMethod, uri);
+  }
+  bool  PageBuilder::canUpload(WebServer &server,PageBuilderUtil::URI_TYPE_SIGNATURE uri){
+	  (void)server;
+	  return canUpload(uri);
+  }
+#endif 
+
 String PageArgument::arg(int i) const {
   if (i >= 0 && i < static_cast<int>(size())) {
     return _item(i).value;
